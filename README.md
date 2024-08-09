@@ -66,13 +66,13 @@ Use POST requests to get tokens. Use tokens in GET requests.
 ```bash
 curl -X POST http://localhost:8080/login -d '{"email": "andrew@example.io", "password": "andrewPassword1"}' -H "Content-Type: application/json"
 ```
-##### Received token
+##### Received token(don't use this token, it is not a constant value)
 ```text
 $2b$10$25zGleOJ2Evkr1XDqwyhAOJcK5ZXpkbPRAz0hvb8jdQGkE43QPHlG
 ```
 ##### GET request to get profile('\\' are for escaping $):
 ```bash
-curl -X GET http://localhost:8080/profile -H "Authorization: Bearer \$2b\$10\$25zGleOJ2Evkr1XDqwyhAOJcK5ZXpkbPRAz0hvb8jdQGkE43QPHlG" -H "Accept: application/json"
+curl -H "Authorization: Bearer \$2b\$10\$25zGleOJ2Evkr1XDqwyhAOJcK5ZXpkbPRAz0hvb8jdQGkE43QPHlG" http://localhost:8080/profile
 ```
 ##### Full GET request:
 ```bash
