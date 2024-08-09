@@ -59,3 +59,30 @@ LOG [NestApplication] Nest application successfully started
 #### Description
 
 Use POST requests to get tokens. Use tokens in GET requests.
+
+#### Examples
+
+##### POST request to get token:
+```bash
+curl -X POST http://localhost:8080/login -d '{"email": "andrew@example.io", "password": "andrewPassword1"}' -H "Content-Type: application/json"
+```
+##### Received token
+```text
+$2b$10$25zGleOJ2Evkr1XDqwyhAOJcK5ZXpkbPRAz0hvb8jdQGkE43QPHlG
+```
+##### GET request to get profile('\\' are for escaping $):
+```bash
+curl -X GET http://localhost:8080/profile -H "Authorization: Bearer \$2b\$10\$25zGleOJ2Evkr1XDqwyhAOJcK5ZXpkbPRAz0hvb8jdQGkE43QPHlG" -H "Accept: application/json"
+```
+##### Full GET request:
+```bash
+> GET /profile HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.81.0
+> Accept: */*
+> Authorization: Bearer $2b$10$25zGleOJ2Evkr1XDqwyhAOJcK5ZXpkbPRAz0hvb8jdQGkE43QPHlG
+```
+##### Received data:
+```json
+{"email":"andrew@example.io","username":"Andrew"}
+```
