@@ -1,0 +1,42 @@
+version: '3.8'
+networks:
+    quantori_network:
+services:
+    database:
+        image: postgres:13
+        ports:
+            - 5123:5432
+        container_name: 'quantori_db'
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: pxtm0222
+            POSTGRES_DB: quantori
+        networks:
+            - quantori_network
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -q -d quantori -U postgres']
+    quantori_app:
+        build: ./quantori_app
+        ports:
+            - 8080:8080
+        container_name: quantori_app
+        volumes:
+            - ./quantori_app/src:/usr/src/app/src
+        depends_on:
+            database:
+                condition: service_healthy
+        command:
+            - /bin/sh
+            - -c
+            - |
+                npx prisma migrate deploy
+                sleep 5
+                npx prisma db seed
+                sleep 5
+                npm run build
+                npm run start:prod
+        restart: always
+        links:
+            - database
+        networks:
+            - quantori_network
